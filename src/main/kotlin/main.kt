@@ -1,13 +1,20 @@
 import ast.createTreesWithModificationLabels
-import java.io.File
+import java.lang.UnsupportedOperationException
 
-const val TEST_DATA_DIR = "testData"
+fun main(args: Array<String>) {
+    if (args.size != 2) {
+        println("Error: expected two arguments: path to source code and path to destination code")
+        return
+    }
+    val src = args[0]
+    val dst = args[1]
 
-fun main() {
-    val src = arrayOf("src", TEST_DATA_DIR, "java", "1", "src.java").joinToString(File.separator)
-    val dst = arrayOf("src", TEST_DATA_DIR, "java", "1", "dst.java").joinToString(File.separator)
-
-    val (srcLabeledTreeText, dstLabeledTreeText) = createTreesWithModificationLabels(src, dst)
+    val (srcLabeledTreeText, dstLabeledTreeText) = try {
+        createTreesWithModificationLabels(src, dst)
+    } catch (e: UnsupportedOperationException) {
+        println("Error: cannot generate tree for one of input files")
+        return
+    }
 
     println("$src:")
     println(srcLabeledTreeText)
