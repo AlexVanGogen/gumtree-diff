@@ -1,5 +1,6 @@
 package ast.actions
 
+import com.github.gumtreediff.matchers.Mapping
 import com.github.gumtreediff.tree.ITree
 
 class TreeModificationInfo(
@@ -8,10 +9,13 @@ class TreeModificationInfo(
     val action: ModificationKind? = null
 )
 
-fun <T : ITree> T.assignModifications(actions: Set<ModificationKind>): TreeModificationInfo {
+fun <T : ITree> T.assignModifications(
+    actions: Set<ModificationKind>,
+    mappings: MutableSet<Mapping>
+): TreeModificationInfo {
     return TreeModificationInfo(
         this,
-        children.map { it.assignModifications(actions) },
-        actions.find { it.node === this }
+        children.map { it.assignModifications(actions, mappings) },
+        actions.find { action -> action.node === this || mappings.firstOrNull { it.first === action.node && it.second === this } != null }
     )
 }

@@ -28,14 +28,15 @@ fun main() {
     val dstRoot = dstAstContext.root
     val m = Matchers.getInstance().getMatcher(srcRoot, dstRoot) // retrieve the default matcher
     m.match()
-    val g = ActionGenerator(srcRoot, dstRoot, m.getMappings())
+    val g = ActionGenerator(srcRoot, dstRoot, m.mappings)
     g.generate()
     val actions = g.actions.map { ModificationKind.from(it) }
     val srcActions = actions.filter { it is MoveModification || it is DeleteModification || it is UpdateModification }.toSet()
     val dstActions = actions.filter { it is MoveModification || it is InsertModification || it is UpdateModification }.toSet()
 
-    val srcTreeModificationInfo = srcRoot.assignModifications(srcActions)
-    val dstTreeModificationInfo = dstRoot.assignModifications(dstActions)
+    val mappingsAsSet = m.mappingsAsSet
+    val srcTreeModificationInfo = srcRoot.assignModifications(srcActions, mappingsAsSet)
+    val dstTreeModificationInfo = dstRoot.assignModifications(dstActions, mappingsAsSet)
 
     println("$src:")
     println(
