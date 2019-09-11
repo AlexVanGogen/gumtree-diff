@@ -6,17 +6,15 @@ import com.github.gumtreediff.client.Run
 import com.github.gumtreediff.gen.Generators
 import kotlin.math.max
 import com.github.gumtreediff.actions.ActionGenerator
-import com.github.gumtreediff.actions.model.Delete
-import com.github.gumtreediff.actions.model.Insert
-import com.github.gumtreediff.actions.model.Move
-import com.github.gumtreediff.actions.model.Update
 import com.github.gumtreediff.matchers.Matchers
+import java.io.File
 
+const val TEST_DATA_DIR = "testData"
 
 fun main() {
     Run.initGenerators()
-    val src = "src.java"
-    val dst = "dst.java"
+    val src = arrayOf("src", TEST_DATA_DIR, "java", "1", "src.java").joinToString(File.separator)
+    val dst = arrayOf("src", TEST_DATA_DIR, "java", "1", "dst.java").joinToString(File.separator)
     val srcAstContext = Generators.getInstance().getTree(src)
     val dstAstContext = Generators.getInstance().getTree(dst)
     val srcAstText = srcAstContext.acceptPrinter(SimpleTreePrinter())
