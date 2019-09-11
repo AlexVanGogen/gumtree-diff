@@ -1,0 +1,26 @@
+src/examples/java/inheritanceOrder/src.java:
+CompilationUnit [0-70]
+    TypeDeclaration "interface" [0-16]
+        SimpleName "Foo" [10-13]
+    TypeDeclaration "interface" [17-33]
+        SimpleName "Bar" [27-30]
+    TypeDeclaration "class" [35-70]
+        SimpleName "FooBar" [41-47]
+        SimpleType "Foo" [59-62]                 [moved | #0]
+            SimpleName "Foo" [59-62]
+        SimpleType "Bar" [64-67]
+            SimpleName "Bar" [64-67]
+
+
+src/examples/java/inheritanceOrder/dst.java:
+CompilationUnit [0-70]
+    TypeDeclaration "interface" [0-16]
+        SimpleName "Foo" [10-13]
+    TypeDeclaration "interface" [17-33]
+        SimpleName "Bar" [27-30]
+    TypeDeclaration "class" [35-70]
+        SimpleName "FooBar" [41-47]
+        SimpleType "Bar" [59-62]
+            SimpleName "Bar" [59-62]
+        SimpleType "Foo" [64-67]                 [moved | #0]
+            SimpleName "Foo" [64-67]
