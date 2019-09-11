@@ -3,14 +3,17 @@ package ast.printer
 import com.github.gumtreediff.tree.ITree
 import com.github.gumtreediff.tree.TreeContext
 
-class SimpleTreePrinter : TreePrinter {
+open class SimpleTreePrinter : TreePrinter {
 
     private var indent = 0
 
-    override fun print(context: TreeContext, tree: ITree): String {
-        val builder = StringBuilder()
+    override fun printCurrentNode(context: TreeContext, tree: ITree): String {
         val label = tree.label.ifNonEmpty { "\"$this\" " }
-        builder.appendln("    ".repeat(indent) + "${context.getTypeLabel(tree)} $label[${tree.pos}-${tree.endPos}]")
+        return "    ".repeat(indent) + "${context.getTypeLabel(tree)} $label[${tree.pos}-${tree.endPos}]"
+    }
+
+    override fun printChildren(context: TreeContext, tree: ITree): String {
+        val builder = StringBuilder()
         withIndent { builder.append(tree.children.joinToString(separator = "") { print(context, it) }) }
         return builder.toString()
     }

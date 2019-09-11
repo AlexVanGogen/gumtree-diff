@@ -1,5 +1,6 @@
 import ast.actions.*
-import ast.printer.PrettyTreeModificationInfoPrinter
+import ast.assignModifications
+import ast.printer.ModificationLabeledTreePrinter
 import ast.printer.acceptPrinter
 import ast.printer.SimpleTreePrinter
 import com.github.gumtreediff.client.Run
@@ -35,21 +36,21 @@ fun main() {
     val dstActions = actions.filter { it is MoveModification || it is InsertModification || it is UpdateModification }.toSet()
 
     val mappingsAsSet = m.mappingsAsSet
-    val srcTreeModificationInfo = srcRoot.assignModifications(srcActions, mappingsAsSet)
-    val dstTreeModificationInfo = dstRoot.assignModifications(dstActions, mappingsAsSet)
+    val srcModificationLabeledTree = srcRoot.assignModifications(srcActions, mappingsAsSet)
+    val dstModificationLabeledTree = dstRoot.assignModifications(dstActions, mappingsAsSet)
 
     println("$src:")
     println(
-        srcTreeModificationInfo.acceptPrinter(
-            PrettyTreeModificationInfoPrinter(modificationInfoIndent),
+        srcModificationLabeledTree.acceptPrinter(
+            ModificationLabeledTreePrinter(modificationInfoIndent),
             srcAstContext
         )
     )
     println()
     println("$dst:")
     println(
-        dstTreeModificationInfo.acceptPrinter(
-            PrettyTreeModificationInfoPrinter(modificationInfoIndent),
+        dstModificationLabeledTree.acceptPrinter(
+            ModificationLabeledTreePrinter(modificationInfoIndent),
             dstAstContext
         )
     )
