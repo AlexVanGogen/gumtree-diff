@@ -1,15 +1,14 @@
 package ast.actions
 
-import com.github.gumtreediff.actions.model.Action
 import com.github.gumtreediff.tree.ITree
 
 class TreeModificationInfo(
     val tree: ITree,
     val childrenInfos: List<TreeModificationInfo>,
-    val action: Action? = null
+    val action: ModificationKind? = null
 )
 
-fun <T : ITree> T.assignModifications(actions: Set<Action>): TreeModificationInfo {
+fun <T : ITree> T.assignModifications(actions: Set<ModificationKind>): TreeModificationInfo {
     return TreeModificationInfo(
         this,
         children.map { it.assignModifications(actions) },

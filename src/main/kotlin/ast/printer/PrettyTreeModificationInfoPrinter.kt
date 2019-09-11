@@ -14,7 +14,7 @@ class PrettyTreeModificationInfoPrinter(val modificationInfoIndent: Int) : TreeM
         val astNodeInfo = "    ".repeat(indent) + "${context.getTypeLabel(tree)} $label[${tree.pos}-${tree.endPos}]"
         builder.append(astNodeInfo)
         builder.append(" ".repeat(modificationInfoIndent - astNodeInfo.length))
-        treeInfo.action?.let { builder.append("[$it]") }
+        treeInfo.action?.let { builder.append("[${it}]") }
         builder.appendln()
         withIndent { builder.append(treeInfo.childrenInfos.joinToString(separator = "") { print(context, it) }) }
         return builder.toString()

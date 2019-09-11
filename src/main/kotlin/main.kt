@@ -1,6 +1,6 @@
+import ast.actions.*
 import ast.printer.PrettyTreeModificationInfoPrinter
 import ast.printer.acceptPrinter
-import ast.actions.assignModifications
 import ast.printer.SimpleTreePrinter
 import com.github.gumtreediff.client.Run
 import com.github.gumtreediff.gen.Generators
@@ -32,9 +32,9 @@ fun main() {
     m.match()
     val g = ActionGenerator(srcRoot, dstRoot, m.getMappings())
     g.generate()
-    val actions = g.actions
-    val srcActions = actions.filter { it is Move || it is Delete || it is Update }.toSet()
-    val dstActions = actions.filter { it is Move || it is Insert || it is Update }.toSet()
+    val actions = g.actions.map { ModificationKind.from(it) }
+    val srcActions = actions.filter { it is MoveModification || it is DeleteModification || it is UpdateModification }.toSet()
+    val dstActions = actions.filter { it is MoveModification || it is InsertModification || it is UpdateModification }.toSet()
 
     val srcTreeModificationInfo = srcRoot.assignModifications(srcActions)
     val dstTreeModificationInfo = dstRoot.assignModifications(dstActions)
